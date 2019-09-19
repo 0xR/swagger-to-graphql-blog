@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import './App.css';
@@ -43,7 +43,7 @@ const PetsQuery = gql`
   }
 `;
 
-const Page = () => {
+const Home = () => {
   const { loading, error, data } = useQuery<FindPets, undefined>(PetsQuery);
   return loading ? (
     <>Loading pets...</>
@@ -56,7 +56,22 @@ const Page = () => {
   );
 };
 
-const App: React.FC = () => {
+interface LayoutProps {
+  children: ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => (
+  <>
+    <h1>PetStore</h1>
+    {children}
+  </>
+);
+
+interface ApolloSetupProps {
+  children: ReactNode;
+}
+
+const ApolloSetup = ({ children }: ApolloSetupProps) => {
   const [state, setState] = useState<AppState>({
     type: 'loading',
   });
@@ -87,16 +102,20 @@ const App: React.FC = () => {
     case 'loading':
       return <>Loading schema...</>;
     case 'resolved':
-      return (
-        <ApolloProvider client={state.client}>
-          <Page />
-        </ApolloProvider>
-      );
+      return <ApolloProvider client={state.client}>{children}</ApolloProvider>;
     default:
       return (
         <>Expected a different state than "{JSON.stringify(state, null, 2)}"</>
       );
   }
 };
+
+const App = () => (
+  <Layout>
+    <ApolloSetup>
+      <Home />
+    </ApolloSetup>
+  </Layout>
+);
 
 export default App;
