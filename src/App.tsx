@@ -7,6 +7,7 @@ import SchemaLink from 'apollo-link-schema';
 import { GraphQLSchema } from 'graphql';
 import gql from 'graphql-tag';
 import { useQuery, ApolloProvider } from '@apollo/react-hooks';
+import { FindPets } from './__generated__/FindPets';
 
 function createApolloClient(schema: GraphQLSchema) {
   return new ApolloClient({
@@ -31,7 +32,7 @@ type AppState =
     };
 
 const PetsQuery = gql`
-  query {
+  query FindPets {
     findPetsByStatus(status: ["available", "pending"]) {
       id
       category {
@@ -43,13 +44,15 @@ const PetsQuery = gql`
 `;
 
 const Page = () => {
-  const { loading, error, data } = useQuery(PetsQuery, {});
+  const { loading, error, data } = useQuery<FindPets, undefined>(PetsQuery);
   return loading ? (
     <>Loading pets...</>
   ) : error ? (
     <>Error loading pets {error}</>
-  ) : (
+  ) : data ? (
     <pre>{JSON.stringify(data, null, 2)}</pre>
+  ) : (
+    <>Expected error, loading or data</>
   );
 };
 
