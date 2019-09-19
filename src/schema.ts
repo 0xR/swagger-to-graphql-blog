@@ -1,33 +1,35 @@
 import {
   createSchema as createSchemaFromSwagger,
-  CallBackendArguments
+  CallBackendArguments,
 } from 'swagger-to-graphql';
 
 export const createSchema = (url: string) =>
   createSchemaFromSwagger({
     swaggerSchema: url,
     async callBackend({
-                        requestOptions: { method, body, baseUrl, path, query, headers, bodyType }
-                      }: CallBackendArguments<{}>) {
-      const searchPath = query ? `?${new URLSearchParams(query as Record<string, string>)}` : '';
+      requestOptions: { method, body, baseUrl, path, query, headers, bodyType },
+    }: CallBackendArguments<{}>) {
+      const searchPath = query
+        ? `?${new URLSearchParams(query as Record<string, string>)}`
+        : '';
       const url = `${baseUrl}${path}${searchPath}`;
       const response = await fetch(url, {
         method,
         ...(body
           ? {
-            ...(bodyType === 'json' && {
-              headers: {
-                'Content-Type': 'application/json',
-                ...headers
-              },
-              body: JSON.stringify(body)
-            }),
-            ...(bodyType === 'formData' && {
-              headers,
-              body: new URLSearchParams(body)
-            })
-          }
-          : { headers })
+              ...(bodyType === 'json' && {
+                headers: {
+                  'Content-Type': 'application/json',
+                  ...headers,
+                },
+                body: JSON.stringify(body),
+              }),
+              ...(bodyType === 'formData' && {
+                headers,
+                body: new URLSearchParams(body),
+              }),
+            }
+          : { headers }),
       });
 
       const text = await response.text();
@@ -39,5 +41,5 @@ export const createSchema = (url: string) =>
         }
       }
       throw new Error(`Response: ${response.status} - ${text}`);
-    }
+    },
   });
