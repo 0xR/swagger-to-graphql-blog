@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,KACE,gBAAiB,CACjB,gBAAiB,CACjB,eAAgB,CAChB,cAAe,CACf,UAAW,CACX,cACF,CACA,SAGE,eACF","file":"main.0156af83.chunk.css","sourcesContent":["body {\n  margin: 40px auto;\n  max-width: 1000px;\n  line-height: 1.6;\n  font-size: 18px;\n  color: #444;\n  padding: 0 10px;\n}\nh1,\nh2,\nh3 {\n  line-height: 1.2;\n}\n"]}
