@@ -2,6 +2,7 @@
   "name": "swagger-to-graphql-blog",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://0xR.github.io/swagger-to-graphql-blog",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
     "@types/jest": "24.0.18",
@@ -27,7 +28,8 @@
     "generate-schema": "swagger-to-graphql --swagger-schema https://petstore.swagger.io/v2/swagger.json > src/__generated__/schema.graphql",
     "precodegen": "npm run codegen:clean && npm run generate-schema",
     "codegen": "apollo client:codegen --target typescript",
-    "postinstall": "npm run codegen"
+    "postinstall": "npm run codegen",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,6 +49,7 @@
   "devDependencies": {
     "@types/react": "^16.9.2",
     "apollo": "^2.18.3",
+    "gh-pages": "^2.1.1",
     "prettier": "^1.18.2"
   }
 }
